@@ -1,5 +1,7 @@
 # SolarEdge input data and file management
 
+import os
+import time
 import serial
 import sys
 import socket
@@ -9,6 +11,7 @@ import se.logutils
 
 logger = logging.getLogger(__name__)
 socketTimeout = 120.0
+DATE_TOKEN = "__date__"
 
 # open data sockets and wait for connection from inverter
 def openDataSocket(ports):
@@ -72,7 +75,23 @@ def closeData(dataFile, networkDevice):
 # open in output file if it is specified
 def openOutFile(fileName, writeMode="wb"):
     if fileName:
+        fileName = fileName.replace(DATE_TOKEN, time.strftime("%Y%m%d"))
+        dirName = os.path.dirname(fileName)
+        if dirName:
+            os.makedirs(dirName, exist_ok=True)
+        if writeMode == "wb":
+            fileName = nextFreeFileName(fileName)
         return open(fileName, writeMode)
+
+# never overwrite an existing file, use 'name.1.ext', 'name.2.ext', etc instead
+def nextFreeFileName(fileName):
+    if not os.path.isfile(fileName):
+        return fileName
+    (root, ext) = os.path.splitext(fileName)
+    count = 1
+    while os.path.exists("%s.%d%s" % (root, count, ext)):
+        count += 1
+    return "%s.%d%s" % (root, count, ext)
 
 # close output files
 def closeOutFiles(recFile, outFile):
