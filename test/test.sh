@@ -40,3 +40,21 @@ for rec in test/rec/*.rec; do
 	test ! -e "${_output}.2.json"
 	test ! -e "${_output}.2.rec"
 done
+
+# nadir (-n): TZ is UTC0, so the epoch of HH:MM is HH*3600+MM*60 modulo a day
+_rec='test/rec/7f104920.rec'
+for _nadir in 'default:6000' '04:05:14700' '0:00:0' '23:59:86340'; do
+	_epoch="$(./semonitor.py -v -n "${_nadir%:*}" "${_rec}" 2>&1 > '/dev/null' | \
+	          sed -n 's/^nadir at epoch \([0-9]*\) .*/\1/p')"
+	test "$((_epoch % 86400))" -eq "${_nadir##*:}"
+done
+
+# nadir needs a valid 24h HH:MM (or 'default') and is rejected otherwise
+for _nadir in '25:00' '1:60' '1:40am' 'reset'; do
+	_rc='0'
+	./semonitor.py -n "${_nadir}" "${_rec}" > '/dev/null' 2>&1 || _rc="${?}"
+	test "${_rc}" -eq 2
+done
+_rc='0'
+./semonitor.py -n > '/dev/null' 2>&1 || _rc="${?}"
+test "${_rc}" -eq 2

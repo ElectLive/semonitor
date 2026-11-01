@@ -4,12 +4,16 @@ import sys
 import serial.tools.list_ports
 import re
 import argparse
+import datetime
 from collections import namedtuple
 import logging
 import logging.handlers
 import se.logutils
 
 logger = logging.getLogger(__name__)
+
+# local time of day for the daily exit when -n is given 'default'
+NADIR_DEFAULT = datetime.time(1, 40)
 
 # run environment that is derived from the arguments that defines how the program will behave
 RunMode = namedtuple("RunMode", ("serialDevice",  # boolean
@@ -55,6 +59,14 @@ def getArgs():
             ports.append(int(p))
         return ports
 
+    def validated_nadir(time_str):
+        if time_str.lower() == "default":
+            return NADIR_DEFAULT
+        m = re.match(r"^([01]?[0-9]|2[0-3]):([0-5][0-9])$", time_str)
+        if not m:
+            raise argparse.ArgumentTypeError("Invalid nadir, expected 24h HH:MM or 'default': {}".format(time_str))
+        return datetime.time(int(m.group(1)), int(m.group(2)))
+
     parser = SeArgumentParser(description='Parse Solaredge data to extract inverter and optimizer telemetry',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("-a", dest="append", action="store_true", default=False, help="append to output file if the file exists")
@@ -63,6 +75,7 @@ def getArgs():
     parser.add_argument("-d", dest="logfile", default="stderr", help="where to write log messages.  either a file name or one of ['stderr', 'syslog']")
     parser.add_argument("-f", dest="follow", action="store_true", default=False, help="wait for appended data as the input file grows (as in tail -f)")
     parser.add_argument("-m", dest="master", action="store_true", default=False, help="function as a RS485 master")
+    parser.add_argument("-n", dest="nadir", type=validated_nadir, default=None, metavar="HH:MM|default", help="exit cleanly (status 0) once a day at the nadir, the local 24h HH:MM time the sun is lowest, so a container restart starts new output files. 'default' is 01:40. not set means never exit")
     parser.add_argument("-o", dest="outfile", default="stdout", help="write performance data to the specified file in JSON format (default: stdout)")
     parser.add_argument("-p", dest="ports", type=validated_ports, default=[22222, 22221, 80], help="ports to listen on in network mode")
     parser.add_argument("-r", dest="record", help="file to record all incoming and outgoing messages to")

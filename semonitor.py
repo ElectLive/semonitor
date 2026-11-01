@@ -3,6 +3,7 @@
 # SolarEdge inverter performance monitoring using the SolarEdge protocol
 
 import time
+import datetime
 import threading
 import sys
 import struct
@@ -30,6 +31,7 @@ UPDATE_SIZE = 0x80000
 # global variables
 threadLock = threading.Lock()  # lock to synchronize reads and writes
 masterEvent = threading.Event()  # event to signal RS485 master release
+nadirEpoch = None  # UNIX epoch of the daily exit, None when disabled
 
 # program termination
 def terminate(code=0, msg=b""):
@@ -195,10 +197,12 @@ def startMaster(args):
     masterThread.start()
     logger.info("starting %s", MASTER_THREAD_NAME)
 
-# wait until keyboard interrupt
+# wait until keyboard interrupt (or the nadir, if enabled)
 def block(state):
     try:
         while True:
+            if nadirEpoch is not None and time.time() >= nadirEpoch:
+                terminate(0, "Nadir reached, exiting")
             time.sleep(1)
     except KeyboardInterrupt:
         se.logutils.dumpState(state)
@@ -217,6 +221,16 @@ def nextSeq():
         seqFile.write(str(seq) + "\n")
     return seq
 
+# Return the UNIX epoch timestamp for the next occurrence of a given
+# local time (nadir), whether that is later today or tomorrow.
+def nextNadirEpoch(nadir, now=None):
+    now = now or datetime.datetime.now()
+    target = datetime.datetime.combine(now.date(), nadir)
+    if now >= target:
+        # build tomorrow from the calendar date, not by adding 24h to the instant
+        target = datetime.datetime.combine(now.date() + datetime.timedelta(days=1), nadir)
+    return target.timestamp()
+
 
 if __name__ == "__main__":
     # create the state variables with timestamps
@@ -229,6 +243,12 @@ if __name__ == "__main__":
 
     # get the command line arguments and run mode
     (args, mode) = se.env.getArgs()
+
+    # calculate the nadir once, only when enabled
+    if args.nadir is not None:
+        nadirEpoch = nextNadirEpoch(args.nadir)
+        logger.info("nadir at epoch %d (%s)", nadirEpoch,
+                    datetime.datetime.fromtimestamp(nadirEpoch).isoformat())
 
     # open the specified data source
     logger.info("opening %s", args.datasource)
