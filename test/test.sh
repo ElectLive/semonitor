@@ -26,7 +26,15 @@ for rec in test/rec/*.rec; do
 	./conversion/se2csv.py -p "${_tmpse2csv}/${_sample}" -t < "test/json/${_sample}.json"
 	diff -w "test/csv/${_sample}/" "${_tmpse2csv}/"
 
-	./semonitor.py -v -x -r "${_output}.re.rec" -o "${_output}.re.json" "test/rec/${_sample}.rec"
-	diff "test/json/${_sample}.json" "${_output}.re.json"
-	cmp "test/rec/${_sample}.rec" "${_output}.re.rec"
+	./semonitor.py -v -x -r "${_output}.rec" -o "${_output}.json" "test/rec/${_sample}.rec"
+	diff "test/json/${_sample}.json" "${_output}.1.json"
+	cmp "test/rec/${_sample}.rec" "${_output}.1.rec"
+
+	./semonitor.py -a -v -x -r "${_output}.rec" -o "${_output}.json" "test/rec/${_sample}.rec"
+	cat "test/json/${_sample}.json" "test/json/${_sample}.json" | \
+	cmp - "${_output}.json"
+	cat "test/rec/${_sample}.rec" "test/rec/${_sample}.rec" | \
+	cmp - "${_output}.rec"
+	test ! -e "${_output}.2.json"
+	test ! -e "${_output}.2.rec"
 done
