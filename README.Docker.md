@@ -56,7 +56,6 @@ docker container run \
         -o "/semonitor/json/__date__.json" \
         -r "/semonitor/rec/__date__.rec" \
         -s '1234567' \
-        -t 4 \
         '/dev/ttyUSB0'
 ```
 
@@ -101,9 +100,6 @@ services:
       - semonitor:/var/lib/semonitor:rw
     networks:
       - semonitor
-    expose:
-      - "80/tcp"
-      - "22221-22222/tcp"
     command: >-
       -a -b 115200
       -m
@@ -111,6 +107,6 @@ services:
       -o /var/lib/semonitor/json/__date__.json
       -r /var/lib/semonitor/rec/__date__.rec
       -s 1234567
-      -t 4 /dev/ttyUSB0
+      /dev/ttyUSB0
     restart: unless-stopped
 ```
