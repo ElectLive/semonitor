@@ -1,5 +1,6 @@
 # SolarEdge input data and file management
 
+import os
 import serial
 import sys
 import socket
@@ -72,6 +73,9 @@ def closeData(dataFile, networkDevice):
 # open in output file if it is specified
 def openOutFile(fileName, writeMode="wb"):
     if fileName:
+        dirName = os.path.dirname(fileName)
+        if dirName:
+            os.makedirs(dirName, exist_ok=True)
         return open(fileName, writeMode)
 
 # close output files
