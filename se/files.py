@@ -1,6 +1,7 @@
 # SolarEdge input data and file management
 
 import os
+import time
 import serial
 import sys
 import socket
@@ -10,6 +11,7 @@ import se.logutils
 
 logger = logging.getLogger(__name__)
 socketTimeout = 120.0
+DATE_TOKEN = "__date__"
 
 # open data sockets and wait for connection from inverter
 def openDataSocket(ports):
@@ -73,6 +75,7 @@ def closeData(dataFile, networkDevice):
 # open in output file if it is specified
 def openOutFile(fileName, writeMode="wb"):
     if fileName:
+        fileName = fileName.replace(DATE_TOKEN, time.strftime("%Y%m%d"))
         dirName = os.path.dirname(fileName)
         if dirName:
             os.makedirs(dirName, exist_ok=True)

@@ -17,7 +17,9 @@ for rec in test/rec/*.rec; do
 	_sample="$(basename "${rec}" ".rec")"
 	_output="${TMP}/output/${_sample}"
 
-	./semonitor.py -v -x -r "${_output}.rec" -o "${_output}.json" "test/rec/${_sample}.rec"
+	./semonitor.py -v -x -r "${_output}.__date__.rec" -o "${_output}.__date__.json" "test/rec/${_sample}.rec"
+	mv "${_output}."[0-9]*".json" "${_output}.json"
+	mv "${_output}."[0-9]*".rec" "${_output}.rec"
 	diff "test/json/${_sample}.json" "${_output}.json"
 	cmp "test/rec/${_sample}.rec" "${_output}.rec"
 
