@@ -8,6 +8,8 @@ FROM index.docker.io/library/python:${PYTHON_VERSION}
 
 COPY requirements.txt /tmp/
 
+# TODO: drop this ignore once a hadolint release newer than 2.15.1 is out.
+# hadolint ignore=DL3009
 RUN apt-get update && \
     apt-get install --no-install-recommends --yes 'tzdata' && \
     rm -f -r '/var/lib/apt/lists/' && \
