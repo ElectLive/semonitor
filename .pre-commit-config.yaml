@@ -52,3 +52,10 @@ repos:
         additional_dependencies: [pre-commit-hooks]
         entry: trailing-whitespace-fixer
         types: [text]
+
+      - id: markdownlint-cli2
+        name: markdownlint
+        language: node
+        additional_dependencies: [markdownlint-cli2]
+        entry: markdownlint-cli2 --fix
+        types: [markdown]
