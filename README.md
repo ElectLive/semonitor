@@ -476,3 +476,34 @@ In graphite / whisper all metric names will begin with "semonitor."
 If the `-f` option had been included, pickle2graphite.py would follow (wait for new
 json lines to be written to) the inFile (yyyymmdd.json) until interrupted
 (Ctrl-C) or otherwise killed.
+
+
+## Development
+
+To develop on semonitor, first set up the virtualenv and git hook once:
+
+```sh
+    ./setup-dev.sh
+```
+
+Lint all files:
+
+```sh
+   .venv/bin/pre-commit run --all-files
+```
+
+Fix spelling mistakes interactively:
+
+```sh
+    .venv/bin/pre-commit run --hook-stage manual codespell-fix --all-files
+```
+
+Create a branch:
+
+```sh
+    git branch <title>
+```
+
+For an existing issue, the title could be the issue number.
+
+Then commit and open a merge request!
