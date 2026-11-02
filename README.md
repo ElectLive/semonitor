@@ -42,7 +42,7 @@ RS485        active, passive
 The inverter is made to connect to semonitor.py instead of the SolarEdge monitoring
 portal by resolving its hostname (usually prod.solaredge.com) to the IP address of
 the server running semonitor.py.  This may be done by connecting the ethernet interface
-of the inverter to a dedicated ethernet interface on the server running semonitor.py.  
+of the inverter to a dedicated ethernet interface on the server running semonitor.py.
 The inverter will attempt to connect to the SolarEdge server using a solaredge.com
 hostname, so some method of resolving this name to the address of the server running
 semonitor.py must be implemented.  Details of how to do this are out of scope of this
@@ -60,7 +60,7 @@ the local server are connected to an ethernet switch.  Either they could be conn
 through an ethernet hub, or the inverter could be connected to a dedicated network
 interface on a server that bridges to the local network.
 
-Traffic may be captured to a pcap file using wireshark or tcpdump or some other program.  
+Traffic may be captured to a pcap file using wireshark or tcpdump or some other program.
 The resulting file must be processed through seextract.py before it is fed into
 semonitor.py.  In this mode, semonitor.py is reading data from a file or stdin and
 isn't actually reading from the network directly.
@@ -70,7 +70,7 @@ isn't actually reading from the network directly.
 The server running semonitor.py is connected to one or more inverters through a
 serial port with an RS485 adapter.  All inverters must be configured as RS485 slaves
 and semonitor.py functions as the RS485 master.  The inverter serial numbers are
-specified to semonitor.py using the -s option and the -m option specifies master mode.  
+specified to semonitor.py using the -s option and the -m option specifies master mode.
 There cannot be another master device on the RS485 bus.
 
 **RS485 passive**
@@ -351,7 +351,7 @@ Maintain a JSON file containing the current state of SolarEdge inverters and opt
 
 #### Options
     -i inverter[,inverter...] Initialize the state file using the specified inverter
-                    IDs rather than using an existing one.  
+                    IDs rather than using an existing one.
     -o stateFile    File containing the current (last read) data values for each
                     inverter and optimizer values from the input file.  It will
                     be overwritten every time that new data is read.

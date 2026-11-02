@@ -65,8 +65,8 @@ is delegated to `ParseDict` (or  subclass), by means of a method called
 is the default method from `ParseDict` itself :
 
 ```python
-    def wrap_in_ids(self):
-        return {self._devType: {self._seId : self}}
+def wrap_in_ids(self):
+    return {self._devType: {self._seId: self}}
 ```
 
 Subclasses which require additional identifiers simply define a
@@ -83,9 +83,9 @@ All that seData.py then has to do is merge the "wrapped" dictionary of
 dictionaries into its master dictionary, `devsDict` :
 
 ```python
-    parsedDevice = ParseDevice(data[dataPtr - devHdrLen:dataPtr + devLen])
-    # Add the new device attributes (wrapped in  dictionary of appropriate identifiers) to the dictionary of devices
-    merge_update(devsDict, parsedDevice.wrap_in_ids())
+parsedDevice = ParseDevice(data[dataPtr - devHdrLen : dataPtr + devLen])
+# Add the new device attributes (wrapped in  dictionary of appropriate identifiers) to the dictionary of devices
+merge_update(devsDict, parsedDevice.wrap_in_ids())
 ```
 
 `merge_update` is a utility function which recursively adds only the
@@ -223,17 +223,17 @@ any subclass) that signal what type of data can be parsed.
 For `ParseDevice` itself, these are essentially dummy placeholders :
 
 ```python
-    _dev = 0xffff # dummy value, I hope.  Should be overwritten in subclasses.
-    _devName = 'Unknown_device'
-    _devType = '{}_{:#06x}'.format(_devName, _dev)
+_dev = 0xFFFF  # dummy value, I hope.  Should be overwritten in subclasses.
+_devName = "Unknown_device"
+_devType = "{}_{:#06x}".format(_devName, _dev)
 ```
 
 For a subclass such as `ParseDevice_0x0030` they are more meaningful :
 
 ```python
-    _dev =0x0030
-    _devName = 'batteries'
-    _devType = '{}_{:#06x}'.format(_devName, _dev)
+_dev = 0x0030
+_devName = "batteries"
+_devType = "{}_{:#06x}".format(_devName, _dev)
 ```
 
 `_dev` must match the `seType` that appears at the start of the data
@@ -301,19 +301,26 @@ To help make this clearer, here is an extract from
 `ParseDevice_0x0030._defn` :
 
 ```python
-    _defn = [
-        # device specific fields
-        #  [paramLen, paramInFmt, paramName, outFormatFn (can be None), out (to csv or graphite) True or False, comment]
-        [4, 'L', "dateTime", "dateTime", False, "Seconds since the epoch"],
-        [12, '12s', "batteryId", None, True, "Identifier for this battery"],
-        [4, 'f', 'Vdc', None, True, "Volts"],
-        ...
-        [4, 'hex', 'HexConst_52', ParseDevice.hexData, False, "Unknown, constant value"],
-        ...
-        [2, 'H', 'BattChargingStatus', None, True, "3=>Charging, 4=>Discharging, 6=>Holding"],
-        ...
-        [4, 'L', 'EOut', None, True, "Wh, Energy out of battery during interval"],
-    ]
+_defn = [
+    # device specific fields
+    #  [paramLen, paramInFmt, paramName, outFormatFn (can be None), out (to csv or graphite) True or False, comment]
+    [4, "L", "dateTime", "dateTime", False, "Seconds since the epoch"],
+    [12, "12s", "batteryId", None, True, "Identifier for this battery"],
+    [4, "f", "Vdc", None, True, "Volts"],
+    # ...
+    [4, "hex", "HexConst_52", ParseDevice.hexData, False, "Unknown, constant value"],
+    # ...
+    [
+        2,
+        "H",
+        "BattChargingStatus",
+        None,
+        True,
+        "3=>Charging, 4=>Discharging, 6=>Holding",
+    ],
+    # ...
+    [4, "L", "EOut", None, True, "Wh, Energy out of battery during interval"],
+]
 ```
 
 
@@ -394,40 +401,95 @@ the relevant code from an earlier (since deleted) version of
 
 
 ```python
-    _defn = [
-        # device specific fields
-        #  [paramLen, paramInFmt, paramName, outFormatFn (can be None), out (to csv or graphite) True or False, comment]
-        [4, 'L', "dateTime", "dateTime", False, "Seconds since epoch"],
-        [1, 'b', "recType", None, True, "record Type, determines the interpretation of later fields" +sp+ "5=Lifetime, 3=Importing?, 7=Battery?, 8=?, 9=2Load?"],
-        [1, 'b', "intervalData", None, True, "1=only interval data has been reported, 0=lifetime data reported as well"],
+_defn = [
+    # device specific fields
+    #  [paramLen, paramInFmt, paramName, outFormatFn (can be None), out (to csv or graphite) True or False, comment]
+    [4, "L", "dateTime", "dateTime", False, "Seconds since epoch"],
+    [
+        1,
+        "b",
+        "recType",
+        None,
+        True,
+        "record Type, determines the interpretation of later fields"
+        + sp
+        + "5=Lifetime, 3=Importing?, 7=Battery?, 8=?, 9=2Load?",
+    ],
+    [
+        1,
+        "b",
+        "intervalData",
+        None,
+        True,
+        "1=only interval data has been reported, 0=lifetime data reported as well",
+    ],
+    [
+        4,
+        "L",
+        "TotalE2Grid",
+        None,
+        True,
+        "Wh, Lifetime Energy exported to grid (*provided* lifetime flag is set)",
+    ],
+    # ...
+    [4, "L", "E2X", None, True, "Wh, Energy to X during the interval"],
+    [4, "L", "EfromX", None, True, "Wh, Energy in from X during interval ?"],
+    [4, "f", "P2X", None, True, "W, Power output to X"],
+    [4, "f", "PfromX", None, True, "W, Power input from X?"],
+]
 
-        [4, 'L', 'TotalE2Grid', None, True, "Wh, Lifetime Energy exported to grid (*provided* lifetime flag is set)" +
-        ...
-        [4, 'L', 'E2X', None, True, "Wh, Energy to X during the interval"],
-        [4, 'L', 'EfromX', None, True, "Wh, Energy in from X during interval ?"],
-        [4, 'f', 'P2X', None, True, "W, Power output to X"],
-        [4, 'f', 'PfromX', None, True, "W, Power input from X?"],
-    ]
+_derivn = [
+    # [paramName, paramDefault, out (to csv) True or False, comment]
+    # recType=5 and (only) intervalData=0 (False) is Grid export / import
+    [
+        "0_5_TotalE2Grid",
+        "nan",
+        True,
+        "Wh, Total lifetime export to grid" + sp + "matches SE LCD panel value",
+    ],
+    # ...
+    [
+        "0_5_E2X",
+        "nan",
+        True,
+        "Wh, Energy exported to grid during interval"
+        + sp
+        + "whenever TotalE2Grid is static, E2X=0",
+    ],
+    [
+        "0_5_EfromX",
+        "nan",
+        True,
+        "Wh, Energy imported from grid during interval"
+        + sp
+        + "whenever TotalEfromGrid is static, EfromX=0",
+    ],
+    [
+        "0_5_P2X",
+        "nan",
+        True,
+        "W, Power to grid (at end of?) interval"
+        + sp
+        + "whenever TotalE2Grid is static, P2X=0",
+    ],
+    [
+        "0_5_PfromX",
+        "nan",
+        True,
+        "W, Power from grid (at end of?) interval"
+        + sp
+        + "whenever TotalEfromGrid is static, PfromX=0",
+    ],
+    # ...
+]
 
-    _derivn = [
-        # [paramName, paramDefault, out (to csv) True or False, comment]
 
-        # recType=5 and (only) intervalData=0 (False) is Grid export / import
-        ["0_5_TotalE2Grid", "nan", True, "Wh, Total lifetime export to grid" + sp + "matches SE LCD panel value"],
-        ...
-        ["0_5_E2X", "nan", True, "Wh, Energy exported to grid during interval" + sp + "whenever TotalE2Grid is static, E2X=0"],
-        ["0_5_EfromX", "nan", True, "Wh, Energy imported from grid during interval" + sp + "whenever TotalEfromGrid is static, EfromX=0"],
-        ["0_5_P2X", "nan", True, "W, Power to grid (at end of?) interval" + sp + "whenever TotalE2Grid is static, P2X=0"],
-        ["0_5_PfromX", "nan", True, "W, Power from grid (at end of?) interval" + sp + "whenever TotalEfromGrid is static, PfromX=0"],
-        ...
-    ]
-
-    def codeDerivations(self):
-        names = ["TotalE2Grid", ..., "E2X", "EfromX", "P2X", "PfromX"]
-        for name in names:
-            rt = self["recType"]
-            idt = self["intervalData"]
-            self["{}_{}_{}".format(idt, rt, name)] = self[name]
+def codeDerivations(self):
+    names = ["TotalE2Grid", ..., "E2X", "EfromX", "P2X", "PfromX"]
+    for name in names:
+        rt = self["recType"]
+        idt = self["intervalData"]
+        self["{}_{}_{}".format(idt, rt, name)] = self[name]
 ```
 
 In this example the *derivation* consisted of copying the raw value,
