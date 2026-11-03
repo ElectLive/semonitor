@@ -1,0 +1,147 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# Copyright (C) 2026 Olliver Schinagl <oliver@schinagl.nl>
+
+version: "0.2"
+language: en-US
+
+dictionaries:
+  - softwareTerms
+  - python
+  - bash
+  - docker
+  - companies
+  - fullstack
+  - filetypes
+
+ignorePaths:
+  - .gitignore
+  - LICENSE
+  - test/csv/**
+  - test/json/**
+  - test/pcap/**
+  - test/rec/**
+
+# Protocol constants and environment variables (PROT_CMD_JUPMNGR_..., STATEDIR,
+# struct formats such as HHLH) are written in ALL CAPS.
+patterns:
+  - name: AllCaps
+    pattern: /\b[A-Z][A-Z0-9_]{3,}\b/g
+
+ignoreRegExpList:
+  - AllCaps
+
+words:
+  # people, projects and terms
+  - jbuehl
+  - Olliver
+  - Schinagl
+  - paho
+  - Mosquitto
+  - Powerwall
+  - subclassing
+  - tcpdump
+  - tcpflow
+  - tshark
+  - Wireshark
+  # tools and distribution packaging
+  - adduser
+  - autotag
+  - codespell
+  - Containerfile
+  - dialout
+  - nofile
+  - nologin
+  - perflint
+  - pygrep
+  - pyupgrade
+  - ulimits
+  # python modules and functions
+  - datadevices
+  - dataparams
+  - datetimez
+  - dateutil
+  - gettz
+  - gmtime
+  - logutils
+  - mktime
+  - ntoa
+  - setdefaulttimeout
+  - tzutc
+  - unhexlify
+  # programs and files of this project
+  - debugfile
+  - infile
+  - recfile
+  - seextract
+  - sekey
+  - selog
+  - semonitor
+  - seprint
+  - seseq
+  - solardata
+  - solaredge
+  - updatefile
+  # variable names, mostly of the utilities
+  - baudrate
+  - clientid
+  - cpart
+  - curday
+  - curepoch
+  - curhour
+  - curstore
+  - curstr
+  - curtime
+  - defargs
+  - defn
+  - derivn
+  - devlen
+  - filebuffersize
+  - lastwrite
+  - lcnt
+  - lreport
+  - mqtt
+  - mqttc
+  - mydict
+  - openfilesecs
+  - tfname
+  - tmpse
+  - writefilename
+  - xerror
+  # inverter and optimizer fields
+  - Eday
+  - Efrom
+  - Emon
+  - Etot
+  - Eyear
+  - Irdc
+  - Pfrom
+  - Pmax
+  - Totaloff
+  - Undeciphered
+  - Vmod
+  - Vopt
+  - vpan
+  # DHCP and DNS message fields
+  - Addrs
+  - chaddr
+  - ciaddr
+  - giaddr
+  - hlen
+  - htype
+  - qclass
+  - qtype
+  - siaddr
+  - sname
+  - yiaddr
+  # struct formats and CRC parameters
+  - calcsum
+  - Lfff
+  - Lfffff
+  - Lffffff
+  - Lffffffffffff
+  - refin
+  - refout
+  - xorout
+  # class names
+  - Umasked
