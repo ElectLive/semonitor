@@ -5,3 +5,10 @@
 [tool.codespell]
 builtin = "clear,rare,en-GB_to_en-US"
 skip = "*.pcap,*.json,*.csv,*.rec,*.msg,*.md,LICENSE"
+
+[tool.ruff]
+target-version = "py315"
+line-length = 80
+extend-exclude = ["test"]
+
+[tool.ruff.format]

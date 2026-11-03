@@ -25,3 +25,15 @@ jobs:
           python -m venv .venv
           .venv/bin/python -m pip install --upgrade --requirement requirements-dev.txt
           .venv/bin/pre-commit run --all-files --show-diff-on-failure --color=always
+
+  ruff:
+    name: ruff (GitHub annotations)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Ruff format
+        uses: astral-sh/ruff-action@v3
+        with:
+          args: format --check --diff
