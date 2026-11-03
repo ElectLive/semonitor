@@ -89,3 +89,11 @@ repos:
         additional_dependencies: [shellcheck-py]
         entry: shellcheck
         types: [shell]
+
+      - id: hadolint
+        name: hadolint
+        language: python
+        additional_dependencies: [hadolint-py]
+        entry: hadolint
+        # Dockerfile and Containerfile are symlinks to Containerfile.alpine.
+        files: ^Containerfile\.
