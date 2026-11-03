@@ -1,6 +1,6 @@
 # SolarEdge network daemon
 
-# Implements a dhcp and a dns server.
+# Implements a DHCP and a DNS server.
 
 import socket
 import threading
@@ -25,7 +25,7 @@ dhcpClientPort = 68
 dhcpThreadName = "dhcpThread"
 dnsThreadName = "dnsThread"
 
-# dhcp message class
+# DHCP message class
 class DhcpMsg(object):
 
     cookie = b"\x63\x82\x53\x63"
@@ -158,7 +158,7 @@ class DhcpMsg(object):
         for opt in self.options:
             logger.data("option: %d %s", opt[0],"0x" + ''.join(x.encode('hex') for x in opt[1]))
 
-# dns message class
+# DNS message class
 class DnsMsg(object):
 
     hdrLen = 12
@@ -239,9 +239,9 @@ class DnsMsg(object):
             logger.data("    TTL: %d" % answer[3])
             logger.data("    resource: " + socket.inet_ntoa(answer[4]))
 
-# start thread to handle dhcp requests
+# start thread to handle DHCP requests
 def startDhcp(ipAddr, subnetMask, broadcastAddr):
-    # handle dhcp requests
+    # handle DHCP requests
     def dhcp():
         logger.debug("starting " + dhcpThreadName)
         ipAddrNum = socket.inet_aton(ipAddr)
@@ -309,7 +309,7 @@ def startDhcp(ipAddr, subnetMask, broadcastAddr):
                         dhcpSocket.sendto(dhcpReplyMsg, (broadcastAddr, dhcpClientPort))
                         del dhcpReply
                 else:
-                    logger.info("first option is not message type")
+                    logger.info("first option is not a message type")
             else:
                 logger.debug("ignoring DHCP request from "+
                     ':'.join(x.encode('hex') for x in dhcpRequest.chaddr))
@@ -319,9 +319,9 @@ def startDhcp(ipAddr, subnetMask, broadcastAddr):
     dhcpThread.daemon = True
     dhcpThread.start()
 
-# start thread to handle dns requests
+# start thread to handle DNS requests
 def startDns(ipAddr):
-    # handle dns requests
+    # handle DNS requests
     def dns():
         logger.debug("starting " + dnsThreadName)
         dnsSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

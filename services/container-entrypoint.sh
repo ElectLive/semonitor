@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2023 Olliver Schinagl <oliver@schinagl.nl>
 #
-# A beginning user should be able to docker run image bash (or sh) without
+# A new user should be able to docker run image bash (or sh) without
 # needing to learn about --entrypoint
 # https://github.com/docker-library/official-images#consistency
 

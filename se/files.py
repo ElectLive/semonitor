@@ -64,7 +64,7 @@ def openInFile(inFileName):
         else:
             return sys.stdin
     else:
-        # Explicitly specify mode rb to keep windows happy!
+        # Explicitly specify mode rb to keep Windows happy!
         return open(inFileName, 'rb')
 
 # close the data source
@@ -72,7 +72,7 @@ def closeData(dataFile, networkDevice):
     logger.info("closing %s", dataFile.name)
     dataFile.close()
 
-# open in output file if it is specified
+# open the output file if it is specified
 def openOutFile(fileName, writeMode="wb"):
     if fileName:
         fileName = fileName.replace(DATE_TOKEN, time.strftime("%Y%m%d"))
@@ -83,7 +83,7 @@ def openOutFile(fileName, writeMode="wb"):
             fileName = nextFreeFileName(fileName)
         return open(fileName, writeMode)
 
-# never overwrite an existing file, use 'name.1.ext', 'name.2.ext', etc instead
+# never overwrite an existing file, use 'name.1.ext', 'name.2.ext', etc. instead
 def nextFreeFileName(fileName):
     if not os.path.isfile(fileName):
         return fileName

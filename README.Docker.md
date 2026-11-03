@@ -1,11 +1,11 @@
 # Running semonitor in docker
 
-SEMonitor can be run within a Docker container. This provides isolation from
-other processes by running it in a containerized environment. As this is not
-an in-depth tutorial on docker, those with Docker, containers or cgroups see
+semonitor can be run within a Docker container. This provides isolation from
+other processes by running it in a containerized environment. This is not an
+in-depth tutorial on Docker; for background on Docker or containers, see
 [docker.com][docker].
 
-This guide is not a comprehensive guide, but just lists the most basic things!
+This guide is not comprehensive; it only lists the most basic steps.
 
 
 ## Building the container
@@ -14,7 +14,7 @@ Building the container is only needed if the official one is not sufficient,
 or when developing on semonitor.
 
 To build the image, the following can be used, where `ISSUE-123` is just used
-as an example. It is important in that it will be re-used later.
+as an example. The same tag is reused later.
 
 ```sh
 docker image build \
@@ -33,7 +33,7 @@ make them available to the installed semonitor application.
 ```sh
 docker container run \
     --interactive \
-    --rm  \
+    --rm \
     --tty \
     --volume "$(pwd)/test:/usr/local/src/semonitor/test" \
     'semonitor:ISSUE-123' \
@@ -43,14 +43,14 @@ docker container run \
 
 ## Running serial device
 
-Running the semonitor on a serial device using the official latest image can
+Running semonitor on a serial device using the official latest image can
 be done as follows.
 
 ```sh
 docker container run \
     --device '/dev/solaredge0:/dev/ttyUSB0' \
     --interactive \
-    --rm  \
+    --rm \
     --tty \
     --volume "$(pwd)/semonitor_logs/:/semonitor/" \
     'ghcr.io/jbuehl/solaredge:latest' \
@@ -66,8 +66,8 @@ docker container run \
 
 To ensure semonitor can accurately set the inverter's clock, the container
 first waits for a valid system time. By default, anything older than the image
-is invalid; override this with any `date -d` compatible `SE_START_EPOCH`, for
-example:
+is invalid; override it by setting `SE_START_EPOCH` to any `date -d` compatible
+value, for example:
 
 ```sh
 --env 'SE_START_EPOCH=2024-01-01'
@@ -78,8 +78,8 @@ example:
 
 ## Using compose
 
-It is also possible to run the container using `docker compose`. Here an
-example. The device used is a udev symlinked serial to USB adapter, with
+It is also possible to run the container using `docker compose`. Here is an
+example. The device used is a udev-symlinked serial-to-USB adapter with
 the appropriate permissions.
 
 ```yaml
