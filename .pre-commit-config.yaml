@@ -97,3 +97,17 @@ repos:
         entry: hadolint
         # Dockerfile and Containerfile are symlinks to Containerfile.alpine.
         files: ^Containerfile\.
+
+      - id: yamllint
+        name: yamllint
+        language: python
+        additional_dependencies: [yamllint]
+        entry: yamllint
+        types: [yaml]
+
+      - id: check-yaml
+        name: check yaml
+        language: python
+        additional_dependencies: [pre-commit-hooks]
+        entry: check-yaml
+        types: [yaml]
