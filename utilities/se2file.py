@@ -25,7 +25,7 @@ def main():
         try:
             inFile = open(args.infile, "r")
         except:
-            print("We could not open %s. Exiting" % ars.infile)
+            print("We could not open %s. Exiting" % args.infile)
             sys.exit(1)
         # We always set looper = False for files, even if the args set it to true. 
         looper = False
