@@ -1,4 +1,5 @@
 # Running semonitor in docker
+
 SEMonitor can be run within a Docker container. This provides isolation from
 other processes by running it in a containerized environment. As this is not
 an in-depth tutorial on docker, those with Docker, containers or cgroups see
@@ -8,6 +9,7 @@ This guide is not a comprehensive guide, but just lists the most basic things!
 
 
 ## Building the container
+
 Building the container is only needed if the official one is not sufficient,
 or when developing on semonitor.
 
@@ -24,6 +26,7 @@ docker image build \
 
 
 ## Running tests
+
 The tests are not included in the container image, so we volume mount them to
 make them available to the installed semonitor application.
 
@@ -39,6 +42,7 @@ docker container run \
 
 
 ## Running serial device
+
 Running the semonitor on a serial device using the official latest image can
 be done as follows.
 
@@ -71,7 +75,9 @@ example:
 --env 'SE_START_EPOCH=@1704067200'
 ```
 
+
 ## Using compose
+
 It is also possible to run the container using `docker compose`. Here an
 example. The device used is a udev symlinked serial to USB adapter, with
 the appropriate permissions.
@@ -114,3 +120,5 @@ services:
       -t 4 /dev/ttyUSB0
     restart: unless-stopped
 ```
+
+[docker]: https://www.docker.com/
