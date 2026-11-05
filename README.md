@@ -291,11 +291,14 @@ SolarEdge inverter performance monitoring using the SolarEdge protocol.
     -a                   append to output file if the file exists
     -b                   baud rate for serial data source (default: 115200)
     -c cmd[/cmd/...]     send the specified command functions
-    -d debugfile         where to send debug messages (stdout|syslog|filename)
-                         (default: syslog)
+    -d debugfile         where to send debug messages (stderr|stdout|syslog|filename)
+                         (default: stderr)
     -f                   wait for appended data as the input file grows
                          (as in tail -f)
     -m                   function as an RS485 master
+    -n HH:MM|default     exit cleanly (status 0) once a day at the nadir (the
+                         local 24h time the sun is lowest); "default" is 01:40
+                         (default: never exit)
     -o outfile           write performance data to the specified file in
                          JSON format (default: stdout)
     -p ports             ports to listen on in network mode
