@@ -623,7 +623,7 @@ class ParseDevice_0x0022(ParseDevice):
             9: "9_PVProduction"
         }
         recTypeLabel = recTypeLabels.get(self["recType"],
-                                         "{}_UnrecognisedRecType".format(
+                                         "{}_UnrecognizedRecType".format(
                                              self["recType"]))
         return {self._devType: {self._seId: {recTypeLabel: self}}}
 
