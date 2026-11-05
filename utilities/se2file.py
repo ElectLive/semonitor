@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
 
-import time
+import argparse
+import datetime
 import os
 import sys
-import datetime
-from collections import OrderedDict
-import argparse
+import time
 
 
 def main():
     # parse the command line arguments
     args = getargs()
 
-    blank_max = 10  # Since we want to work on files and stdin. We will count the number of lines that are blank. If we process 10 blank lines and we are not doing stdin, we will assume that the file is done
+    # Since we want to work on files and stdin. We will count the number of
+    # lines that are blank. If we process 10 blank lines and we are not doing
+    # stdin, we will assume that the file is done
+    blank_max = 10
     basedir = args.basedir
     debug = args.debug
     prefix = args.prefix
@@ -24,7 +26,7 @@ def main():
         inFile = sys.stdin
     else:
         try:
-            inFile = open(args.infile, "r")
+            inFile = open(args.infile)
         except:
             print("We could not open %s. Exiting" % args.infile)
             sys.exit(1)

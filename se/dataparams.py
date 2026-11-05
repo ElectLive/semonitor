@@ -108,7 +108,8 @@ invOutFmt = [
 #   freq1 = devData[12] # frequency (Hz)
 #   freq2 = devData[13] # frequency (Hz)
 #   freq3 = devData[14] # frequency (Hz)
-#   EdayDC = devData[15] # Same as Eday, but measured at DC side. Obfuscated by SE because it would directly reveal inverter efficiency.
+#   EdayDC = devData[15] # Same as Eday, but measured at DC side.
+#     Obfuscated by SE because it would directly reveal inverter efficiency.
 #   Edc = devData[16] # Same as Eac, but measured at DC side. Obfuscated by SE just like EdayDC.
 #   Vdc = devData[17] # DC volts
 #   Idc = devData[18] # Same as Iac, but at DC side. Obfuscated by SE.
@@ -204,7 +205,9 @@ inv3PhItems = [
     "data31",
 ]
 # device data output file format strings
-# inv3PhOutFmt = ["%s", "%s", "%s", "%d", "%d", "%f", "%f", "%f", "%f", "%f", "%f", "%f", "%f", "%f", "%f", "%f", "%f", "%f", "%f", "%f", "%f"]
+# inv3PhOutFmt = ["%s", "%s", "%s", "%d", "%d", "%f", "%f", "%f", "%f", "%f",
+#                 "%f", "%f", "%f", "%f", "%f", "%f", "%f", "%f", "%f", "%f",
+#                 "%f"]
 inv3PhOutFmt = [
     "%s",
     "%s",

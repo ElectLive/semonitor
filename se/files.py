@@ -1,13 +1,13 @@
 # SolarEdge input data and file management
 
-import os
-import time
-import serial
-import sys
-import socket
-import select
 import logging
-import se.logutils
+import os
+import select
+import socket
+import sys
+import time
+
+import serial
 
 logger = logging.getLogger(__name__)
 socketTimeout = 120.0
@@ -70,11 +70,9 @@ def openInFile(inFileName):
     if inFileName == "stdin":
         if sys.version_info >= (3, 0):
             return sys.stdin.buffer
-        else:
-            return sys.stdin
-    else:
-        # Explicitly specify mode rb to keep Windows happy!
-        return open(inFileName, "rb")
+        return sys.stdin
+    # Explicitly specify mode rb to keep Windows happy!
+    return open(inFileName, "rb")
 
 
 # close the data source

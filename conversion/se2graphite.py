@@ -2,11 +2,12 @@
 
 # send SolarEdge performance metrics to Graphite
 
-import json
 import getopt
-import time
-import sys
+import json
 import socket
+import sys
+import time
+
 from common import unwrap_metricsDict
 
 try:
@@ -85,16 +86,15 @@ if __name__ == "__main__":
                     and devAttr != "Undeciphered_data"
                 ):
                     try:
-                        # Weed out attributes with non numeric values (Graphite does this too, but why clog the network?)
+                        # Weed out attributes with non numeric values
+                        # (Graphite does this too, but why clog the network?)
                         test = float(devAttrs[devAttr])
                         if test != test:
                             # It's a NaN!
                             pass
                         else:
-                            fullName = "{}{}.{}".format(base, baseName, devAttr)
-                            metric = "{} {} {}\n".format(
-                                fullName, str(devAttrs[devAttr]), timeStamp
-                            )
+                            fullName = f"{base}{baseName}.{devAttr}"
+                            metric = f"{fullName} {devAttrs[devAttr]!s} {timeStamp}\n"
                             graphiteSocket.send(metric)
                             time.sleep(delay)
                     except ValueError:

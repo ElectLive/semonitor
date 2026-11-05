@@ -2,11 +2,10 @@
 
 # Implements a DHCP and a DNS server.
 
-import socket
-import threading
-import struct
 import logging
-import se.logutils
+import socket
+import struct
+import threading
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +26,7 @@ dnsThreadName = "dnsThread"
 
 
 # DHCP message class
-class DhcpMsg(object):
+class DhcpMsg:
     cookie = b"\x63\x82\x53\x63"
 
     hdrLen = 12
@@ -209,7 +208,7 @@ class DhcpMsg(object):
 
 
 # DNS message class
-class DnsMsg(object):
+class DnsMsg:
     hdrLen = 12
     queryLen = 4
 
