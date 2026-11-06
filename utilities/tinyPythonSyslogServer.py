@@ -33,12 +33,14 @@ logging.basicConfig(
     filemode="a",
 )
 
+logger = logging.getLogger(__name__)
+
 
 class SyslogUDPHandler(SocketServer.BaseRequestHandler):
     def handle(self):
         data = bytes.decode(self.request[0].strip())
         sys.stderr.write(f"{self.client_address[0]} :  {data}\n")
-        logging.info(str(data))
+        logger.info(str(data))
 
 
 if __name__ == "__main__":
