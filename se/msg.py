@@ -1,6 +1,5 @@
 # SolarEdge message protocol
 
-from builtins import bytes
 import logging
 import struct
 import time
