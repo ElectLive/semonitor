@@ -241,11 +241,11 @@ class DnsMsg:
             self.adds = []
 
     def parse(self, msg):
-        (self.ident, self.flags, nQuestions, nAnswers, nAuths, nAdds) = (
+        (self.ident, self.flags, nQuestions, _nAnswers, _nAuths, _nAdds) = (
             struct.unpack(">HHHHHH", msg[0 : self.hdrLen])
         )
         msgPtr = self.hdrLen
-        for i in range(nQuestions):
+        for _i in range(nQuestions):
             qname = self.parseName(msg[msgPtr:])
             msgPtr += len(qname) + 1
             (qtype, qclass) = struct.unpack(

@@ -100,7 +100,7 @@ class ParseDevice(dict):
         # appropriate for the seType encountered in the data block (provided a subclass specific to the seType has been
         # defined, of course).
         devHdrLen = 8
-        (seType, seId, devLen) = struct.unpack("<HLH", data[0:devHdrLen])
+        (seType, _seId, _devLen) = struct.unpack("<HLH", data[0:devHdrLen])
 
         # Search for a subclass which can handle this seType
         for subclass in cls.__subclasses__():
@@ -243,8 +243,8 @@ class ParseDevice(dict):
             paramInFmt,
             paramName,
             outFormatFn,
-            out,
-            comment,
+            _out,
+            _comment,
         ) in self._defn:
             # Extract the field
             if paramInFmt == "hex":
@@ -394,10 +394,10 @@ class ParseDevice(dict):
         if len(cls._defn) > 0:
             for (
                 paramLen,
-                paramInFmt,
+                _paramInFmt,
                 paramName,
-                outFormatFn,
-                out,
+                _outFormatFn,
+                _out,
                 comment,
             ) in cls._defn:
                 msg.append(
@@ -407,7 +407,7 @@ class ParseDevice(dict):
                 word = byte / 4.0
         if len(cls._derivn) > 0:
             msg.append("Derived items\n")
-            for paramName, paramDefault, out, comment in cls._derivn:
+            for paramName, paramDefault, _out, comment in cls._derivn:
                 msg.append(
                     itemLine.format(
                         "----",

@@ -26,7 +26,7 @@ def openDataSocket(ports):
         listener.listen(1)
         listeners.append(listener)
     # Wait for one of the listeners to get a client connection
-    (readable, writable, exceptional) = select.select(listeners, [], [])
+    (readable, _writable, _exceptional) = select.select(listeners, [], [])
     listener = readable[0]
     (clientSocket, addr) = listener.accept()
     logger.info(
