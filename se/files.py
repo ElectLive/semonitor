@@ -89,6 +89,7 @@ def openOutFile(fileName, writeMode="wb"):
         if writeMode == "wb":
             fileName = nextFreeFileName(fileName)
         return open(fileName, writeMode)
+    return None
 
 
 # never overwrite an existing file, use 'name.1.ext', 'name.2.ext', etc. instead
