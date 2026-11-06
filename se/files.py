@@ -19,7 +19,7 @@ def openDataSocket(ports):
     listeners = []
     # listen on all the specified ports
     for port in ports:
-        logger.info("waiting for connection on port " + str(port))
+        logger.info("waiting for connection on port %s", port)
         listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         listener.bind(("", port))

@@ -167,13 +167,13 @@ class DhcpMsg:
                 msgPtr = len(msg)
 
     def log(self):
-        logger.data("op: %d" % self.op)
-        logger.data("htype: %x" % self.htype)
-        logger.data("hlen: %d" % self.hlen)
-        logger.data("hops: %d" % self.hops)
-        logger.data("xid: 0x%08x" % self.xid)
-        logger.data("secs: %d" % self.secs)
-        logger.data("flags: 0x%04x" % self.flags)
+        logger.data("op: %d", self.op)
+        logger.data("htype: %x", self.htype)
+        logger.data("hlen: %d", self.hlen)
+        logger.data("hops: %d", self.hops)
+        logger.data("xid: 0x%08x", self.xid)
+        logger.data("secs: %d", self.secs)
+        logger.data("flags: 0x%04x", self.flags)
         logger.data("ciaddr: %s", socket.inet_ntoa(self.ciaddr))
         logger.data("yiaddr: %s", socket.inet_ntoa(self.yiaddr))
         logger.data("siaddr: %s", socket.inet_ntoa(self.siaddr))
@@ -300,27 +300,27 @@ class DnsMsg:
         return msg + b"\x00"
 
     def log(self):
-        logger.data("id: %x" % self.ident)
-        logger.data("flags: %04x" % self.flags)
+        logger.data("id: %x", self.ident)
+        logger.data("flags: %04x", self.flags)
         for question in self.questions:
             logger.data("question")
-            logger.data("    name: " + question[0])
-            logger.data("    type: %04x" % question[1])
-            logger.data("    class: %04x" % question[2])
+            logger.data("    name: %s", question[0])
+            logger.data("    type: %04x", question[1])
+            logger.data("    class: %04x", question[2])
         for answer in self.answers:
             logger.data("answer")
-            logger.data("    name: " + answer[0])
-            logger.data("    type: %04x" % answer[1])
-            logger.data("    class: %04x" % answer[2])
-            logger.data("    TTL: %d" % answer[3])
-            logger.data("    resource: " + socket.inet_ntoa(answer[4]))
+            logger.data("    name: %s", answer[0])
+            logger.data("    type: %04x", answer[1])
+            logger.data("    class: %04x", answer[2])
+            logger.data("    TTL: %d", answer[3])
+            logger.data("    resource: %s", socket.inet_ntoa(answer[4]))
 
 
 # start thread to handle DHCP requests
 def startDhcp(ipAddr, subnetMask, broadcastAddr):
     # handle DHCP requests
     def dhcp():
-        logger.debug("starting " + dhcpThreadName)
+        logger.debug("starting %s", dhcpThreadName)
         ipAddrNum = socket.inet_aton(ipAddr)
         clientIpAddrNum = ipAddrNum[0:3] + chr(ord(ipAddrNum[3]) + 1)
         subnetMaskNum = socket.inet_aton(subnetMask)
@@ -420,8 +420,8 @@ def startDhcp(ipAddr, subnetMask, broadcastAddr):
                     logger.info("first option is not a message type")
             else:
                 logger.debug(
-                    "ignoring DHCP request from "
-                    + ":".join(x.encode("hex") for x in dhcpRequest.chaddr)
+                    "ignoring DHCP request from %s",
+                    ":".join(x.encode("hex") for x in dhcpRequest.chaddr),
                 )
             del dhcpRequest
 
@@ -434,7 +434,7 @@ def startDhcp(ipAddr, subnetMask, broadcastAddr):
 def startDns(ipAddr):
     # handle DNS requests
     def dns():
-        logger.debug("starting " + dnsThreadName)
+        logger.debug("starting %s", dnsThreadName)
         dnsSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         dnsSocket.bind(("", dnsPort))
         seq = 0
