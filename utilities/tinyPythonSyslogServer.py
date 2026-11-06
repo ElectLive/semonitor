@@ -36,7 +36,6 @@ logging.basicConfig(
 class SyslogUDPHandler(SocketServer.BaseRequestHandler):
     def handle(self):
         data = bytes.decode(self.request[0].strip())
-        socket = self.request[1]
         print("%s : " % self.client_address[0], str(data))
         logging.info(str(data))
 
