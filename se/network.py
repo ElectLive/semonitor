@@ -454,7 +454,7 @@ def startDns(ipAddr):
                     flags=0x8000,
                     questions=dnsRequest.questions,
                     answers=[
-                        question + (dnsTtl, socket.inet_aton(ipAddr))
+                        (*question, dnsTtl, socket.inet_aton(ipAddr))
                         for question in dnsRequest.questions
                     ],
                 )
