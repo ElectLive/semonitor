@@ -98,9 +98,9 @@ def nextFreeFileName(fileName):
         return fileName
     (root, ext) = os.path.splitext(fileName)
     count = 1
-    while os.path.exists("%s.%d%s" % (root, count, ext)):
+    while os.path.exists(f"{root}.{count}{ext}"):
         count += 1
-    return "%s.%d%s" % (root, count, ext)
+    return f"{root}.{count}{ext}"
 
 
 # close output files
