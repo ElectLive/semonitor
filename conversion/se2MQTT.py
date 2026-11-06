@@ -78,4 +78,4 @@ while True:
         mqttc.publish(topic, json.dumps(stateDict))
         mqttc.disconnect()
     except Exception as ex:
-        print("MQTT Exception: " + str(ex))
+        sys.stderr.write(f"MQTT Exception: {ex}\n")
