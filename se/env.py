@@ -128,8 +128,6 @@ def getArgs():
             parser.error("Master mode only allowed with RS485 serial device")
         if len(args.slaves) < 1:
             parser.error("At least one slave address must be specified for master mode")
-    else:
-        passiveMode = True
 
     # command mode validation
     if args.commands:
