@@ -120,7 +120,7 @@ def validateMsg(msg):
     calcsum = calcCrc(
         struct.pack(">HLLH", msgSeq, fromAddr, toAddr, function) + data)
     if calcsum != checksum:
-        logger.error("Checksum error. Expected 0x%04x, got 0x%04x" % (checksum, calcsum))
+        logger.error("Checksum error. Expected 0x%04x, got 0x%04x" % (calcsum, checksum))
         for l in se.logutils.format_data(msg):
             logger.data(l)
         return (0, 0, 0, 0, b"")
