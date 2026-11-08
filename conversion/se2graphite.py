@@ -81,7 +81,7 @@ if __name__ == "__main__":
                                 base, baseName, devAttr)
                             metric = "{} {} {}\n".format(
                                 fullName, str(devAttrs[devAttr]), timeStamp)
-                            graphiteSocket.send(metric)
+                            graphiteSocket.send(metric.encode())
                             time.sleep(delay)
                     except ValueError:
                         # It's not a numeric metric, ignore it
