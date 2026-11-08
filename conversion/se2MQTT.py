@@ -63,7 +63,7 @@ while True:
             stateDict["inverters"][inverter]["Pac"] = 0.0
     # send to MQTT
     try:
-        mqttc = mqtt.Client(client_id=clientid)
+        mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=clientid)
         mqttc.username_pw_set(user, passwd)
         mqttc.connect(server)
         mqttc.publish(topic, json.dumps(stateDict))
