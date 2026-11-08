@@ -194,7 +194,7 @@ def parseDeviceData(data):
 def parseEventData(seId, eventItems, devData):
     # unpack data and map to items
     seEventData = [
-        struct.unpack(eventInFmt, devData[:invInFmtLen])[i] for i in eventIdx
+        struct.unpack(eventInFmt, devData[:eventInFmtLen])[i] for i in eventIdx
     ]
     seEventData[2] = formatDateTime(seEventData[2])
     if seEventData[1] == 0:
