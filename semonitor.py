@@ -109,7 +109,10 @@ def processMsg(msg, args, mode, state, dataFile, recFile, outFile, updateBuf):
 
 # write firmware image to file
 def writeUpdate(updateBuf, updateFileName):
-    updateBuf = b"".join(updateBuf)
+    try:
+        updateBuf = bytes(updateBuf)  # a list of ints, as collected by readData()
+    except TypeError:
+        updateBuf = b"".join(updateBuf)  # a list of chunks of bytes
     logger.info("writing %s", updateFileName)
     with open(updateFileName, "wb") as updateFile:
         updateFile.write(updateBuf)
