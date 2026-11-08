@@ -12,7 +12,7 @@ import sys
 
 logFile = open(sys.argv[1])
 try:
-    datafile = open(sys.argv[2], "wb")
+    dataFile = open(sys.argv[2], "wb")
 except IndexError:
     dataFile = sys.stdout
 
