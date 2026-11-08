@@ -35,8 +35,8 @@ def readMsg(inFile, recFile, mode, state):
         # active mode that is not rs485
         # read the magic number and header
         msg = readBytes(inFile, recFile, magicLen + msgHdrLen, mode, state)
-        if not msg:   # end of file
-            return (msg, True)
+        if len(msg) < magicLen + msgHdrLen:   # end of file, maybe in the header
+            return (b"", True)
         (dataLen, dataLenInv, msgSeq, fromAddr, toAddr, function) = \
             struct.unpack("<HHHLLH", msg[magicLen:])
         # read the data and checksum
