@@ -206,7 +206,7 @@ def nextSeq():
         seq += 1
         if seq > 65535:
             seq = 1
-    except IOError:
+    except (IOError, ValueError):
         seq = 1
     with open(SEQ_FILE_NAME, "w") as seqFile:
         seqFile.write(str(seq) + "\n")
