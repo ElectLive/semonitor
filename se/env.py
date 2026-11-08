@@ -81,6 +81,8 @@ def getArgs():
     elif args.logfile:
         handler = logging.FileHandler(args.logfile, mode="a" if args.append else "w")
         handler.setFormatter(file_formatter)
+    else:
+        parser.error("The destination of the log messages (-d) can not be empty")
 
     level = {                               # previously:
             1: logging.INFO,                # -v    debugFiles
