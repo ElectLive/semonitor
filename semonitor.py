@@ -99,7 +99,7 @@ def processMsg(msg, args, mode, state, dataFile, recFile, outFile, updateBuf):
                 # set time
                 replyFunction = se.commands.PROT_RESP_SERVER_GMT
                 replyData = se.data.formatTime(int(time.time()),
-                    (time.localtime().tm_hour - time.gmtime().tm_hour) * 60 * 60)
+                    time.localtime().tm_gmtoff)
             elif function == se.commands.PROT_RESP_POLESTAR_MASTER_GRANT_ACK:  # RS485 master release
                 masterEvent.set()
                 se.logutils.setState(state, "masterEvent", masterEvent.is_set())
