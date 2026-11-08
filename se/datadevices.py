@@ -100,10 +100,11 @@ class ParseDevice(dict):
         devHdrLen = 8
         (seType, seId, devLen) = struct.unpack("<HLH", data[0:devHdrLen])
 
-        # Search for a subclass which can handle this seType
+        # Search for a subclass which can handle this seType. Create it through its own __new__, as Python calls
+        # __init__ on the result of this one: instantiating the subclass here would parse the data twice.
         for subclass in cls.__subclasses__():
             if subclass._dev == seType:
-                return (subclass(data))
+                return subclass.__new__(subclass, data)
 
         # Otherwise either return a ParseDevice_Explorer (explorer=True),
         # which is a special subclass which will parse almost anything,
@@ -111,7 +112,7 @@ class ParseDevice(dict):
         # or just return a bare minimum instance of a dictionary (explorer=False).
         if explorer:
             # return a special ParseDevice which tries almost every field parsing it knows about
-            return ParseDevice_Explorer(data)
+            return ParseDevice_Explorer.__new__(ParseDevice_Explorer, data)
         else:
             # return an instance of a basic dictionary (the base class for ParseDevice itself)
             newInstance = super(ParseDevice, cls).__new__(cls)
