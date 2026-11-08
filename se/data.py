@@ -96,7 +96,7 @@ def parseValueType(data):
     return {"value": value, "type": dataType}
 
 def formatValueType(value, dataType):
-    return struct.pack("<HL", value, dataType)
+    return struct.pack("<LH", value, dataType)
 
 def parseParamValue(data):
     (param, value) = struct.unpack("<HL", data)
