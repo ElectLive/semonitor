@@ -2,6 +2,7 @@
 Description=SolarEdge monitor
 After=syslog.target
 [Service]
+EnvironmentFile=-/etc/default/solaredge
 ExecStart=/root/solaredge/scripts/semonitor
 Restart=on-abort
 [Install]

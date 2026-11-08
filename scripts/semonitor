@@ -1,9 +1,25 @@
 #!/bin/bash -
+#
+# Run semonitor and keep the state of the inverters up to date.
+#
+# This is configured through the environment. A systemd unit can set these
+# with EnvironmentFile= or Environment=, and an OpenRC init script can source
+# a conf.d file that exports them. All are optional, these are the defaults:
+#
+#   SE_DEVICE      serial device the RS485 adapter is connected to
+#   SE_OPTIONS     options of semonitor, besides -s and the device; -t 4 -m
+#                  makes it the RS485 master, -t 4 alone only listens
+#   SE_INVERTERS   comma delimited list of the IDs of the inverters
+#   SE_DATADIR     where the performance data is written to
+#   SE_STATEDIR    where the current state is kept
+#   SE_PREFIX      prefix of the name of the performance data file
 
-DATADIR=/root/solaredge/data/
-STATEDIR=/root/solaredge/state/
-PREFIX=
-INVERTERS=730A8690,7F104A16
+SE_DEVICE="${SE_DEVICE:-/dev/ttyUSB0}"
+SE_OPTIONS="${SE_OPTIONS:--t 4 -m}"
+SE_INVERTERS="${SE_INVERTERS:-730A8690,7F104A16}"
+SE_DATADIR="${SE_DATADIR:-/root/solaredge/data/}"
+SE_STATEDIR="${SE_STATEDIR:-/root/solaredge/state/}"
+SE_PREFIX="${SE_PREFIX:-}"
 
 # wait for the time to get set
 while [ `date +%Y` == "1969" ]
@@ -12,7 +28,8 @@ do
 	sleep 1
 done
 
-python /root/solaredge/semonitor.py -v -t 4 -m -s ${INVERTERS} /dev/ttyUSB0 | \
+# SE_OPTIONS is deliberately not quoted, it holds multiple arguments
+python /root/solaredge/semonitor.py -v ${SE_OPTIONS} -s "${SE_INVERTERS}" "${SE_DEVICE}" | \
 stdbuf -oL uniq | \
-tee ${DATADIR}${PREFIX}`date +%Y%m%d%H%M%S`.json | \
-python /root/solaredge/conversion/se2state.py -i ${INVERTERS} -o ${STATEDIR}solar.json
+tee "${SE_DATADIR}${SE_PREFIX}"`date +%Y%m%d%H%M%S`.json | \
+python /root/solaredge/conversion/se2state.py -i "${SE_INVERTERS}" -o "${SE_STATEDIR}solar.json"
