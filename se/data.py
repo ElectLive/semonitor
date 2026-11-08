@@ -24,7 +24,7 @@ def parseData(function, data):
             se.commands.PROT_CMD_POLESTAR_MASTER_GRANT, se.commands.PROT_RESP_POLESTAR_MASTER_GRANT_ACK
     ]:
         # functions with no arguments
-        return ''.join(x.encode('hex') for x in data)
+        return data.hex()
     elif function == se.commands.PROT_CMD_SERVER_POST_DATA:
         return parseDeviceData(data)
     elif function == se.commands.PROT_RESP_POLESTAR_GET_STATUS:
@@ -296,7 +296,7 @@ def formatDateTime(timeStamp):
     try:
         return time.asctime(time.localtime(timeStamp))
     except ValueError:
-        return ''.join(x.encode('hex') for x in struct.pack("<L", timeStamp))
+        return struct.pack("<L", timeStamp).hex()
     except Exception as ex:
         logger.info("Invalid time stamp: "+str(timeStamp)+" "+str(ex))
         return "invalid"
