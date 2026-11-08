@@ -113,7 +113,7 @@ def getArgs():
     # serial device validation
     if serialDevice:
         serialDevice = True
-        args.following = True
+        args.follow = True
         if args.type == "2":
             passiveMode = False
         elif args.type != "4":
